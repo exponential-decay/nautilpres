@@ -80,6 +80,14 @@ statistics about a file you can:
 If you give the scripts a whirl, let me know how it goes. Feedback would be
 great.
 
+Also found along the way was the concept of nautilus-scripts which can add
+capability to the context-manager, which I think is pretty cool. You could
+integrate `bagit.py` as an example (probably!) and be able to bag from the
+GUI instead of having to drop into the command-line. The example in
+[this blog](https://fedoramagazine.org/integrating-scripts-nautilus/) is about
+converting files, so there's some scope to use this functionality for #digipres
+as well.
+
 ## Questions
 
 * What file-manager do you use?
