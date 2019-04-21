@@ -88,6 +88,14 @@ GUI instead of having to drop into the command-line. The example in
 converting files, so there's some scope to use this functionality for #digipres
 as well.
 
+### Example scripts:
+
+* Johan van der Knijff of the KB in The Netherlands linked me to
+[his collection][scripts-1] of context manager scripts for the Caja file
+manager in Linux Mint, which also work in Nautilus.
+
+[scripts-1]: https://github.com/bitsgalore/contextactions
+
 ## Questions
 
 * What file-manager do you use?
