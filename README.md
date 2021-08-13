@@ -20,7 +20,8 @@ the nautilus list view.
 
 * Siegfried must be installed, and an absolute path must be setup for it in the
 `digipres_helpers.py` script: [seen here][nautilpres-1].
-* `nautilus-python` must be installed via a package manager such as `apt get`.
+* `nautilus-python` must be installed via a package manager such as 
+`apt get install` (`python-nautilus`/`python3-nautilus` (newer)).
 * The scripts must be installed in `~/.local/share/nautilus-python/extensions`.
 * Whether you choose the columns or the properties script, both require
 `digipres_helpers.py` which wraps Siegfried and checksum functions.
