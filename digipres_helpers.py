@@ -85,7 +85,13 @@ class SiegfriedRunner(object):
             self.format_name = "{} {}".format(self.format_name, version)
         if self.puid:
             if "fmt/" in self.puid:
+                # PRNOM identifier, create a URI here.
                 self.URI = "http://www.nationalarchives.gov.uk/PRONOM/{}".format(
+                    self.puid
+                )
+            elif "fdd" in self.puid:
+                # LoC identifier, create a URI here.
+                self.URI = "https://www.loc.gov/preservation/digital/formats/fdd/{}.shtml".format(
                     self.puid
                 )
         return True
