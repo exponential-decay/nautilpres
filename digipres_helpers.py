@@ -29,13 +29,13 @@ class HashHandler(object):
         """Return an appropriate hash function if we want to choose something
         different.
         """
-        if "md5" in hash_type:
+        if "md5" in hash_type.lower():
             return hashlib.md5()
-        if "sha1" in hash_type:
+        if "sha1" in hash_type.lower():
             return hashlib.sha1()
-        if "sha256" in hash_type:
+        if "sha256" in hash_type.lower():
             return hashlib.sha256()
-        if "sha512" in hash_type:
+        if "sha512" in hash_type.lower():
             return hashlib.sha512()
 
     def get_hash(self, file_name, hash_type):
@@ -53,31 +53,45 @@ class SiegfriedRunner(object):
     """Encapsulate the functions we're going to use from Siegfried."""
 
     def get_format_puid_pair(self, file):
-        """Return a tuple with some information about our file format."""
+        """Return a boolean letting the caller know that the command
+        was successful or unsuccessful.
+        """
         try:
             sf_out = subprocess.check_output([WHICH_SF, "-json", file])
         except OSError:
             print("Siegfried not installed", file=sys.stderr)
-            return (None, None)
+            return False
         except subprocess.CalledProcessError:
             print("Error accessing file object", file=sys.stderr)
-            return (None, None)
+            return False
         try:
             files = json.loads(sf_out)
         except ValueError:
             print("Cannot parse SF data", file=sys.stderr)
-            return (None, None)
+            return False
         try:
-            format_name = (
-                files.get("files", [])[0].get("matches", [])[0].get("format", "None")
+            self.format_name = (
+                files.get("files", [])[0].get("matches", [])[0].get("format", None)
             )
             version = (
-                files.get("files", [])[0].get("matches", [])[0].get("version", "None")
+                files.get("files", [])[0].get("matches", [])[0].get("version", None)
             )
-            puid = files.get("files", [])[0].get("matches", [])[0].get("id", "None")
+            self.puid = files.get("files", [])[0].get("matches", [])[0].get("id", None)
+            self.URI = files.get("files", [])[0].get("matches", [])[0].get("URI", None)
         except IndexError:
             print("Cannot access sf data for file:", file, file=sys.stderr)
-            return (None, None)
+            return False
         if version:
-            return (puid, "{} {}".format(format_name, version))
-        return (puid, format_name)
+            self.format_name = "{} {}".format(self.format_name, version)
+        if self.puid:
+            if "fmt/" in self.puid:
+                # PRNOM identifier, create a URI here.
+                self.URI = "http://www.nationalarchives.gov.uk/PRONOM/{}".format(
+                    self.puid
+                )
+            elif "fdd" in self.puid:
+                # LoC identifier, create a URI here.
+                self.URI = "https://www.loc.gov/preservation/digital/formats/fdd/{}.shtml".format(
+                    self.puid
+                )
+        return True
